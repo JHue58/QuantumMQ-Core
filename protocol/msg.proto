@@ -1,0 +1,43 @@
+syntax = "proto3";
+package protocol;
+option go_package = "./protocol";
+
+enum Action {
+  Push = 0;
+  Pull = 1;
+  Sub = 2;
+  UnSub = 3;
+}
+
+enum Mode {
+  P2P = 0;
+  PubSub = 1;
+}
+
+message MQRequest {
+  Action action = 1;
+  Mode mode = 2;
+  string sender =3;
+  string receiver = 4;
+  bytes payload = 5;
+  uint64 pulls = 6;
+}
+
+// MQMessage
+message MQMessage{
+  // 源，生产者
+  string source = 1;
+  bytes payload = 2;
+}
+
+message MQResponse{
+  MQMessage message = 1;
+  uint64 remaining = 2;
+  string error = 3;
+}
+
+message MQMultiResponse{
+  repeated MQResponse responses = 1;
+  uint64 remaining = 2;
+  string error = 3;
+}
