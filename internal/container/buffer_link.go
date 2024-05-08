@@ -166,12 +166,6 @@ func (l *LinkedList[T]) RollBack() {
 	l.unlock()
 }
 
-// Len 链表长度
-func (l *LinkedList[T]) Len() int {
-	length := atomic.LoadInt64(&l.length)
-	return int(length)
-}
-
 // Release 释放节点
 func (l *LinkedList[T]) Release() {
 	l.lock()
@@ -182,6 +176,12 @@ func (l *LinkedList[T]) Release() {
 	}
 	l.malloc = 0
 	l.unlock()
+}
+
+// Len 链表长度
+func (l *LinkedList[T]) Len() int {
+	length := atomic.LoadInt64(&l.length)
+	return int(length)
 }
 
 // PinRelease 释放节点

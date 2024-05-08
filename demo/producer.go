@@ -39,7 +39,7 @@ func (p *producer) Init() tea.Cmd {
 
 	})
 
-	cli, err := qnet.NewQuantumClient(":8888", send.QTPSenderConfigDefault(), qio.QTPWriterConfigDefault(), h)
+	cli, err := qnet.NewQuantumClient("159.75.93.21:8888", send.QTPSenderConfigDefault(), qio.QTPWriterConfigDefault(), h)
 	if err != nil {
 		fmt.Println(err.Error())
 		return tea.Quit
@@ -117,7 +117,6 @@ func (p *producer) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case "enter":
 			req := protocol.NewMQRequest()
-
 			req.Action = protocol.Action_Push
 			req.Sender = p.name
 			req.Receiver = p.inputs[p.cursorLR][0]

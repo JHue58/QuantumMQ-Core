@@ -20,6 +20,31 @@ func TestSvr(t *testing.T) {
 	svr.Run(":8888")
 }
 
+func BenchmarkCli(b *testing.B) {
+	h := receive.NewCallBackHandler()
+	h.SyncACK(func(sender *send.QTPSender, data *qc.QTPData) {
+	})
+	writeConf := qio.QTPWriterConfigDefault()
+	writeConf.SendCap = 4096000
+	cli, err := qnet.NewQuantumClient(":8888", send.QTPSenderConfigDefault(), writeConf, h)
+	if err != nil {
+		panic(err)
+	}
+	req := protocol.NewMQRequest()
+	req.Payload = make([]byte, 128)
+	req.Action = protocol.Action_Push
+	req.Mode = protocol.Mode_P2P
+	data, _ := proto.Marshal(req)
+	cb := func(seq uint64, err *errors.QError) {
+		if err != nil {
+			panic(err)
+		}
+	}
+	for i := 0; i < b.N; i++ {
+		cli.SendNoACK(data, qc.BINARY, cb)
+	}
+}
+
 func TestCli(t *testing.T) {
 	wg := sync.WaitGroup{}
 	count := 10

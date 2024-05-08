@@ -23,18 +23,18 @@ message MQRequest {
   uint64 pulls = 6;
 }
 
-// MQMessage
-message MQMessage{
-  // 源，生产者
-  string source = 1;
-  bytes payload = 2;
-}
-
 message MQResponse{
   MQMessage message = 1;
   uint64 remaining = 2;
   string error = 3;
 }
+
+message MQMessage{
+  string source = 1;
+  bytes payload = 2;
+}
+
+
 
 message MQMultiResponse{
   repeated MQResponse responses = 1;

@@ -47,7 +47,7 @@ func (c *consumer) Init() tea.Cmd {
 		}
 		c.msgs += fmt.Sprintf("[MSG] %s\t来自\t%s\t剩余%d\n", string(resp.Message.Payload), resp.Message.Source, resp.Remaining)
 	})
-	cli, err := qnet.NewQuantumClient(":8888", send.QTPSenderConfigDefault(), qio.QTPWriterConfigDefault(), h)
+	cli, err := qnet.NewQuantumClient("159.75.93.21:8888", send.QTPSenderConfigDefault(), qio.QTPWriterConfigDefault(), h)
 	if err != nil {
 		fmt.Println(err.Error())
 		return tea.Quit
